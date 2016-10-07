@@ -30,24 +30,24 @@ class SearchOptionBarExample extends Component {
   render(){
     return(
       <SearchOptionBar
-      options={
-        ['This','That','Super Long Option Cut Off Because Of Fixed Button Width']
-      }
-      onPress={
-        (option) => console.log('You Pressed ' + option)
-      }
-      containerStyle={{
-        backgroundColor:'white',
-        paddingVertical:5,
-      }}
-      buttonStyle={{
-        borderWidth:1,
-        borderRadius:10,
-        height: 30,
-        width: 80,
-      }}
-      showsHorizontalScrollIndicator={true}
-      />
+        options={
+          ['This','That','Super Long Option Cut Off Because Of Fixed Button Width']
+        }
+        onPress={
+          (option) => console.log('You Pressed ' + option)
+        }
+        containerStyle={{
+          backgroundColor:'white',
+          paddingVertical:5,
+        }}
+        buttonStyle={{
+          borderWidth:1,
+          borderRadius:10,
+          height: 30,
+          width: 80,
+        }}
+        showsHorizontalScrollIndicator={true}
+        />
     )
   };
 

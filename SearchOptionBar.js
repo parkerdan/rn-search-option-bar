@@ -117,11 +117,9 @@ class TabOption extends Component {
            alignItems: 'center',
            justifyContent: 'center',
          },this.props.buttonStyle,this.setBackgroundColor()]}>
-         <Text
-           style={ this.setTextColor() }
-           numberOfLines={1}
+         <Text style={this.setTextColor()} numberOfLines={1}>
           {this.props.option}
-          </Text>
+         </Text>
        </TouchableOpacity>
      </View>
    )
