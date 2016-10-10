@@ -50,6 +50,7 @@ class SearchOptionBarExample extends Component {
           borderColor: 'red',
           height: 30,
           width: 80,
+          backgroundColor: 'deeppink'
         }}
         showsHorizontalScrollIndicator={true}
         />
