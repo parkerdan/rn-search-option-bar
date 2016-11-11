@@ -5,13 +5,15 @@
 
 <br>
 
-* prop `options` is required and is an array of strings for the search options
+### Prop
 
-* prop `onPress` is required and will be called with the corresponding Text
-
-* prop `buttonStyle` is required styles for the option buttons
-
-* prop `containerStyle` is required styles for the container
+| Prop | Type | Description | Required |
+| ---  | ---  | ---         | ---      |
+| options | Array of Strings | The options listed in the buttons | **YES** |
+| onPress | function | the function called when the button is pressed, called with the string as the argument | **YES** |
+| buttonStyle | object | styles applied to the buttons | **YES** |
+| containerStyle | object | styles applied to the container | **YES** |
+| showsHorizontalScrollIndicator | boolean | show the scroll indicator | no |
 
 #### How it works
 
@@ -19,7 +21,7 @@
 * The `buttonStyle` `backgroundColor` will be applied to the selected option
 * The `containerStyle` `backgroundColor` will be applied to the text of the selected option.
 
-So at minimum, I suggest `containerStyle={{backgroundColor:'white'}}` and `buttonStyle={{borderWidth:1}}`
+So at minimum, I suggest `containerStyle={{backgroundColor:'white'}}` and `buttonStyle={{borderWidth:1,backgroundColor: 'something'}}`
 
 ![Example One](./SearchOption.png "Two Icons")
 
