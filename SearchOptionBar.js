@@ -1,127 +1,125 @@
 'use strict'
 
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import {
- Text,
- View,
- ScrollView,
- Dimensions,
- TouchableOpacity,
- PixelRatio
+Text,
+View,
+ScrollView,
+TouchableOpacity,
+StyleSheet
 } from 'react-native';
 
 import {debounce} from 'lodash';
 
-const { height,width } = Dimensions.get('window');
 
 // the 'onPress' will be called with the corresponding 'options' String as the argument
 // the first 'option' will be highlighted as the default selection
 
 const propTypes = {
- options: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
- onPress: React.PropTypes.func.isRequired,
- containerStyle: React.PropTypes.object.isRequired,
- buttonStyle: React.PropTypes.object.isRequired,
- showsHorizontalScrollIndicator: React.PropTypes.bool,
+options: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+onPress: React.PropTypes.func.isRequired,
+containerStyle: React.PropTypes.oneOfType([React.PropTypes.object,React.PropTypes.number]).isRequired,
+buttonStyle: React.PropTypes.oneOfType([React.PropTypes.object,React.PropTypes.number]).isRequired,
+showsHorizontalScrollIndicator: React.PropTypes.bool,
+textStyle:React.PropTypes.oneOfType([React.PropTypes.object,React.PropTypes.number]).isRequired,
 };
 
-export default class SearchOptionBar extends Component {
+export default class SearchOptionBar extends React.Component {
 
- constructor(props){
-   super(props);
-   this.selectNewTab = this.selectNewTab.bind(this);
-   this.state = {
-     selectedTab: props.options[0],
-   };
- };
+constructor(props){
+  super(props);
+  this.state = {
+    selectedTab: props.options[0],
+  };
+};
 
- selectNewTab(option){
-   this.setState({ selectedTab: option });
- };
+selectNewTab = (option) => {
+  this.setState({ selectedTab: option });
+};
 
- render(){
+render(){
 
-   let _this = this;
+  let _this = this;
+  let { onPress, buttonStyle, containerStyle, textStyle } = this.props
 
-   let options = this.props.options.map( function(option,i){
-     return(
-       <TabOption key={i}
-         index={i}
-         scrollView={ _this.scrollView}
-         option={option}
-         selectedTab={ _this.state.selectedTab }
-         onPress={ _this.props.onPress }
-         selectNewTab={ _this.selectNewTab }
-         buttonStyle={_this.props.buttonStyle}
-         textColor={
-           (_this.props.containerStyle.backgroundColor) ? _this.props.containerStyle.backgroundColor:'black'
-         }
-       />
-     )
-   });
+  let options = this.props.options.map( function(option,i){
+    return(
+      <TabOption
+        key={ i }
+        index={ i }
+        option={ option }
+        selectedTab={ _this.state.selectedTab }
+        onPress={ onPress }
+        selectNewTab={ _this.selectNewTab }
+        buttonStyle={ buttonStyle }
+        textStyle={ textStyle }
+      />
+    )
+  });
 
-   return(
-     <View style ={[{alignItems:'center'},this.props.containerStyle]}>
-       <ScrollView
-         horizontal={true}
-         showsHorizontalScrollIndicator={this.props.showsHorizontalScrollIndicator}
-         contentContainerStyle={{
-           alignItems:'center',
-         }}>
-         {options}
-       </ScrollView>
-     </View>
-   )
- };
+  return(
+    <View style ={ containerStyle }>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={this.props.showsHorizontalScrollIndicator}
+        contentContainerStyle={{alignItems:'center'}}>
+        {options}
+      </ScrollView>
+    </View>
+  )
+};
 };
 
 SearchOptionBar.propTypes = propTypes;
 
-class TabOption extends Component {
+class TabOption extends React.Component {
 
- constructor(props){
-   super(props);
-   this.handlePress = debounce(this.handlePress.bind(this),200,{leading:true} );
-   this.state ={
-   }
- };
+constructor(props){
+  super(props);
+  this.handlePress = debounce(this.handlePress.bind(this),200,{leading:true} );
+  this.state ={
+    backgroundColor: StyleSheet.flatten(props.buttonStyle).backgroundColor,
+    textColor: StyleSheet.flatten(props.textStyle).color
+  }
+};
 
- setBackgroundColor(){
-   if (this.props.selectedTab === this.props.option) {
-     return {backgroundColor: this.props.buttonStyle.backgroundColor }
-   } else {
-     return { backgroundColor: 'transparent' }
-   }
- };
+setBackgroundColor(){
+  if (this.props.selectedTab === this.props.option) {
+    return {backgroundColor: this.state.backgroundColor }
+  } else {
+    return { backgroundColor: 'transparent' }
+  }
+};
 
- setTextColor(){
-   if (this.props.selectedTab === this.props.option) {
-     return {color: this.props.textColor }
-   } else {
-     return { color: this.props.buttonStyle.backgroundColor }
-   }
- };
+setTextColor(){
+  if (this.props.selectedTab === this.props.option) {
+    return {color: this.state.textColor }
+  } else {
+    return { color: this.state.backgroundColor }
+  }
+};
 
- handlePress(){
-   let option = this.props.option;
-   this.props.onPress(option);
-   this.props.selectNewTab(option);
- };
+handlePress(){
+  let option = this.props.option;
+  this.props.onPress(option);
+  this.props.selectNewTab(option);
+};
 
- render(){
-   return(
-     <View style={{paddingHorizontal: 4}}>
-       <TouchableOpacity
-         onPress={this.handlePress}
-         style={[{
-           alignItems: 'center',
-           justifyContent: 'center',
-         },this.props.buttonStyle,this.setBackgroundColor()]}>
-         <Text style={this.setTextColor()} numberOfLines={1}>
-          {this.props.option}
-         </Text>
-       </TouchableOpacity>
-     </View>
-   )
- };
+render(){
+  let { buttonStyle, textStyle, option } = this.props
+  return(
+    <View style={{paddingHorizontal: 4}}>
+      <TouchableOpacity
+        onPress={this.handlePress}
+        style={[{
+          alignItems: 'center',
+          justifyContent: 'center',
+        },buttonStyle,this.setBackgroundColor()]}>
+        <Text style={[textStyle,this.setTextColor()]} numberOfLines={1}>
+          {option}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )
+};
 };

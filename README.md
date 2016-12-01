@@ -1,63 +1,76 @@
 # RN-Search-Option-Bar
+<a href="https://npmjs.org/package/rn-search-option-bar"><img alt="npm version" src="http://img.shields.io/npm/dt/rn-header.svg?style=flat-square"></a>
 <br>
 
 * `npm install rn-search-option-bar --save`
 
 <br>
 
-### Prop
 
-| Prop | Type | Description | Required |
-| ---  | ---  | ---         | ---      |
-| options | Array of Strings | The options listed in the buttons | **YES** |
-| onPress | function | the function called when the button is pressed, called with the string as the argument | **YES** |
-| buttonStyle | object | styles applied to the buttons | **YES** |
-| containerStyle | object | styles applied to the container | **YES** |
-| showsHorizontalScrollIndicator | boolean | show the scroll indicator | no |
+![Example One](./example.gif  "Example gif")
+
 
 #### How it works
 
 * The first option shows as selected by default
 * The `buttonStyle` `backgroundColor` will be applied to the selected option
-* The `containerStyle` `backgroundColor` will be applied to the text of the selected option.
+* Unselected options are transparent background
+* Unselected option's text gets the button's backgroundColor as it's color
 
-So at minimum, I suggest `containerStyle={{backgroundColor:'white'}}` and `buttonStyle={{borderWidth:1,backgroundColor: 'something'}}`
-
-![Example One](./SearchOption.png "Two Icons")
 
 
 ```js
-import React, { Component } from 'react';
+import React from 'react';
+
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  searchOptionBar:{
+     height: 50,
+     backgroundColor: colors.pageBackground,
+     borderBottomColor: 'black',
+     borderBottomWidth: StyleSheet.hairlineWidth
+   },
+   searchOptionButton: {
+     width: 80,
+     height: 30,
+     borderRadius: 12,
+     borderWidth: StyleSheet.hairlineWidth,
+     borderColor: 'blue',
+     backgroundColor: 'blue'
+   },
+   buttonText:{
+     color:'white',
+     fontSize:14
+   }
+ })
 
 
 import SearchOptionBar from 'rn-search-option-bar';
 
-class SearchOptionBarExample extends Component {
+class SearchOptionBarExample extends React.Component {
   render(){
     return(
       <SearchOptionBar
-        options={
-          ['This','That','Super Long Option Cut Off Because Of Fixed Button Width', 'More', 'Stuff', 'To', 'Do']
-        }
-        onPress={
-          (option) => console.log('You Pressed ' + option)
-        }
-        containerStyle={{
-          backgroundColor:'white',
-          height:60,
-        }}
-        buttonStyle={{
-          borderWidth:1,
-          borderRadius:10,
-          borderColor: 'red',
-          height: 30,
-          width: 80,
-          backgroundColor: 'deeppink'
-        }}
-        showsHorizontalScrollIndicator={true}
-        />
+        onPress={ (opt) => console.log(opt) }
+        options={ peopleSearchCategories }
+        containerStyle={ styles.searchOptionBar }
+        buttonStyle={ styles.searchOptionButton }
+        textStyle={ styles.buttonText }
+      />    
     )
   };
 
 }
 ```
+
+### Props
+
+| Prop | Type | Description | Required |
+| ---  | ---  | ---         | ---      |
+| options | Array of Strings | The options listed in the buttons | **YES** |
+| onPress | function | the function called when the button is pressed, called with the string as the argument | **YES** |
+| buttonStyle | object | styles applied to the buttons | **YES** must include `backgroundColor` |
+| containerStyle | object | styles applied to the container | **YES** |
+| textStyle | object | styles for the text, `color` will only be applied to the selected option, unselected will default to the `backgroundColor` of the button | **YES** must include `color` |
+| showsHorizontalScrollIndicator | boolean | show the scroll indicator | no |
