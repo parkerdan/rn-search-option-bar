@@ -53,7 +53,7 @@ class SearchOptionBarExample extends React.Component {
     return(
       <SearchOptionBar
         onPress={ (opt) => console.log(opt) }
-        options={ peopleSearchCategories }
+        options={ ['array','of','strings','goes','here'] }
         containerStyle={ styles.searchOptionBar }
         buttonStyle={ styles.searchOptionButton }
         textStyle={ styles.buttonText }
